@@ -14,9 +14,13 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
+import java.util.ArrayList;
 import java.util.List;
 
+import Model.Book;
+import Model.Order;
 import Model.OrderItens;
+import Model.User;
 
 /**
  *
@@ -24,19 +28,13 @@ import Model.OrderItens;
  */
 public class OrderItensDao {
 
-    Connection conn;
-
-    public OrderItensDao() {
-        this.conn = UtilsDao.getConnection();
-    }
-
     public static int insert(OrderItens orderItens) {
         Connection conn = UtilsDao.getConnection();
         int response = 0;
 
         try {
 
-            String query1 = "INSERT INTO library.order_itens (quantidade, fkorid, fkboid) "
+            String query1 = "INSERT INTO library.orderitens (quantidade, fkorid, fkboid) "
                     + "VALUES (?,?,?)";
 
             PreparedStatement prep1 = conn.prepareStatement(
@@ -74,87 +72,121 @@ public class OrderItensDao {
         return response;
     }
 
-    public static int insert(Order order) {
+    // public static int insert(OrderItens orderitens) {
 
-        Connection conn = UtilsDao.getConnection();
-        int response = 0;
+    // Connection conn = UtilsDao.getConnection();
+    // int response = 0;
 
-        try {
-            // faz a insercao da ordem de compra
-            String queryOrder = "INSERT INTO `library`.`order`(`date`,`numberofbooks`,`fkusid`)"
-                    + "VALUES (?,?,?)";
+    // try {
+    // // faz a insercao da ordem de compra
+    // String queryOrder = "INSERT INTO
+    // `library`.`orderitens`(`quantidade`,`fkorid`,`fkboid`)"
+    // + "VALUES (?,?,?)";
 
-            PreparedStatement prepOrder = conn.prepareStatement(queryOrder, Statement.RETURN_GENERATED_KEYS);
-            prepOrder.setString(1, UtilsDao.dateFormat.format(new Date()));
-            prepOrder.setInt(2, order.getNumberofbooks());
-            prepOrder.setInt(3, order.getUser().getId());
+    // PreparedStatement prepOrder = conn.prepareStatement(queryOrder,
+    // Statement.RETURN_GENERATED_KEYS);
+    // prepOrder.setInt(1, orderitens.getQuantidade());
+    // prepOrder.setInt(2, orderitens.getOrder().getId());
+    // prepOrder.setInt(3, orderitens.getBook().getId());
 
-            prepOrder.executeUpdate();
+    // prepOrder.executeUpdate();
 
-            // pega o id da ordem de venda
-            ResultSet idOrdemVenda = prepOrder.getGeneratedKeys();
-            if (idOrdemVenda.next()) {
+    // // pega o id da ordem de venda
+    // ResultSet idOrdemVenda = prepOrder.getGeneratedKeys();
+    // if (idOrdemVenda.next()) {
 
-                response = idOrdemVenda.getInt(1);
+    // response = idOrdemVenda.getInt(1);
 
-            } else {
-                response = 0;
-            }
-            conn.close();
+    // } else {
+    // response = 0;
+    // }
+    // conn.close();
 
-        } catch (Exception e) {
-            // TODO: handle exception
-            response = 0;
-        }
-        return response;
+    // } catch (Exception e) {
+    // // TODO: handle exception
+    // response = 0;
+    // }
+    // return response;
 
-    }
+    // }
 
     // consulta ordem
-    public static Order consultar(int id) {
+    public static OrderItens consultar(int id) {
         Connection conn = UtilsDao.getConnection();
-        Order order = new Order();
+        OrderItens orderitens = null;
 
         try {
-            String queryOrder = "Select * from library.order " +
-                    "where orid = ?";
+            String queryOrder = "Select * from library.orderitens " +
+                    "where oritid = ?";
 
             PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
             prepOrder.setInt(1, id);
 
-            ResultSet idOrder = prepOrder.executeQuery();
-            if (idOrder.next()) {
+            ResultSet ordeResultSet = prepOrder.executeQuery();
+            if (ordeResultSet.next()) {
+                orderitens = new OrderItens();
 
-                order.setId(idOrder.getInt("orid"));
-                order.setDate(idOrder.getString("date"));
-                order.setNumberofbooks(idOrder.getInt("numberofbooks"));
+                orderitens.setId(ordeResultSet.getInt("oritid"));
+                orderitens.setQuantidade(ordeResultSet.getInt("quantidade"));
+                orderitens.setOrder(OrderDao.consultar(ordeResultSet.getInt("fkorid")));
+                orderitens.setBook(BookDao.consultar(ordeResultSet.getInt("fkboid")));
             } else {
-                order = null;
+                orderitens = null;
             }
             conn.close();
 
         } catch (Exception e) {
             // TODO: handle exception
-            order = null;
+            orderitens = null;
         }
-        return order;
+        return orderitens;
+    }
+
+    public static List<OrderItens> consultarPorOrder(Order order) {
+        Connection conn = UtilsDao.getConnection();
+        List<OrderItens> list = new ArrayList<OrderItens>();
+
+        try {
+            String queryOrder = "Select * from library.orderitens " +
+                    "where fkorid = ?";
+
+            PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
+            prepOrder.setInt(1, order.getId());
+
+            ResultSet ordeResultSet = prepOrder.executeQuery();
+            while (ordeResultSet.next()) {
+                OrderItens orderitens = new OrderItens();
+
+                orderitens.setId(ordeResultSet.getInt("oritid"));
+                orderitens.setQuantidade(ordeResultSet.getInt("quantidade"));
+                orderitens.setOrder(order);
+                orderitens.setBook(BookDao.consultar(ordeResultSet.getInt("fkboid")));
+                list.add(orderitens);
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            list = null;
+        }
+        return list;
     }
 
     // atualiza a ordem
-    public static boolean atualizar(Order order) {
+    public static boolean atualizar(OrderItens orderItens) {
         Connection conn = UtilsDao.getConnection();
         boolean response = false;
 
         try {
 
-            String queryOrder = "UPDATE library.order " +
-                    "SET date = ?, numberofbooks = ? WHERE orid = ?";
+            String queryOrder = "UPDATE library.orderitens " +
+                    "SET quantidade = ?, fkorid = ?, fkboid = ? WHERE oritid = ?";
 
             PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
 
-            prepOrder.setString(1, order.getDate().toString());
-            prepOrder.setInt(2, order.getNumberofbooks());
-            prepOrder.setInt(3, order.getId());
+            prepOrder.setInt(1, orderItens.getQuantidade());
+            prepOrder.setInt(2, orderItens.getOrder().getId());
+            prepOrder.setInt(3, orderItens.getBook().getId());
 
             response = prepOrder.executeUpdate() > 0;
             conn.close();
@@ -173,7 +205,30 @@ public class OrderItensDao {
         boolean response = false;
 
         try {
-            String queryOrder = "DELETE FROM library.order WHERE orid = ?";
+            String queryOrder = "DELETE FROM library.orderitens WHERE oritid = ?";
+
+            PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
+
+            prepOrder.setInt(1, id);
+
+            response = prepOrder.executeUpdate() > 0;
+
+            conn.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            response = false;
+        }
+
+        return response;
+    }
+
+    public static boolean deletePorIdOrder(int id) {
+        Connection conn = UtilsDao.getConnection();
+        boolean response = false;
+
+        try {
+            String queryOrder = "DELETE FROM library.orderitens WHERE fkorid = ?";
 
             PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
 

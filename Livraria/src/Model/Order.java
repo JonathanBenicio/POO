@@ -23,7 +23,7 @@ public class Order {
 
     private int id;
     private String date;
-    private int numberofbooks;
+    private int numberofbooks = 0;
     private User User;
     private List<OrderItens> ListOrderItens;
 
@@ -67,12 +67,16 @@ public class Order {
         this.ListOrderItens = listOrderItens;
     }
 
-    public void addBook(Book book, int quantidade) {
-        numberofbooks = +1;
+    // public void addBook(Book book, int quantidade) {
+    // numberofbooks = +1;
 
-        OrderItens orderItens = new OrderItens(this, book);
-        orderItens.setQuantidade(quantidade);
+    // OrderItens orderItens = new OrderItens(this, book);
+    // orderItens.setQuantidade(quantidade);
+    // }
+
+    public void addOrderItens(OrderItens orderItens) {
         this.ListOrderItens.add(orderItens);
+
     }
 
 }

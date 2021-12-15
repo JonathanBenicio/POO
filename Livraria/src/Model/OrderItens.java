@@ -12,11 +12,6 @@ package Model;
 
 public class OrderItens {
 
-    public OrderItens(Order order, Book book) {
-        this.Order = order;
-        this.Book = book;
-    }
-
     private int id;
     private int quantidade;
     private Order Order;

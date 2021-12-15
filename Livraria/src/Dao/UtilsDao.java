@@ -20,14 +20,14 @@ import java.util.List;
  * @author Jonathan
  */
 public class UtilsDao {
-	static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    	static Connection getConnection() {
+	public static Connection getConnection() {
 		try {
-                    Properties connConfig = new Properties();
-                    connConfig.setProperty("user", "root");
-                    connConfig.setProperty("password", "jonathan");
-                    return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/library", connConfig);
+			Properties connConfig = new Properties();
+			connConfig.setProperty("user", "root");
+			connConfig.setProperty("password", "jonathan");
+			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/library", connConfig);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

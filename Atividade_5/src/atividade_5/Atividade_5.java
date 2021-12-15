@@ -17,13 +17,12 @@ public class Atividade_5 {
     public static void main(String[] args) {
         // TODO code application logic here
         Livro livro = new Livro();
-		
-		livro.adicionarLivro("Harry Potter", "J. K. Rowling", 2);
-		livro.adicionarLivro("The Hunger Games", "Suzanne Collins", 1);
-		livro.listarLivro();
-		livro.removerLivro(1);
-		System.out.println("------------------");
-		livro.listarLivro();
+        livro.adicionarLivro("Harry Potter", "J. K. Rowling", 2);
+        livro.adicionarLivro("The Hunger Games", "Suzanne Collins", 1);
+        livro.listarLivro();
+        livro.removerLivro(1);
+        System.out.println("------------------");
+        livro.listarLivro();
     }
     
 }

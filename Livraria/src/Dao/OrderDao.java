@@ -8,6 +8,7 @@ package Dao;
 import Model.Book;
 import Model.Order;
 import Model.OrderItens;
+import Model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +19,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 /*
@@ -43,7 +46,7 @@ public class OrderDao {
 
             PreparedStatement prepOrder = conn.prepareStatement(queryOrder, Statement.RETURN_GENERATED_KEYS);
             prepOrder.setString(1, UtilsDao.dateFormat.format(new Date()));
-            prepOrder.setInt(2, order.getNumberofbooks());
+            prepOrder.setInt(2, order.getListOrderItens().size());
             prepOrder.setInt(3, order.getUser().getId());
 
             prepOrder.executeUpdate();
@@ -85,6 +88,8 @@ public class OrderDao {
                 order.setId(idOrder.getInt("orid"));
                 order.setDate(idOrder.getString("date"));
                 order.setNumberofbooks(idOrder.getInt("numberofbooks"));
+                order.setUser(UserDao.consultar(idOrder.getInt("fkusid")));
+                order.setListOrderItens(OrderItensDao.consultarPorOrder(order));
             } else {
                 order = null;
             }
@@ -95,6 +100,36 @@ public class OrderDao {
             order = null;
         }
         return order;
+    }
+
+    public static List<Order> consultarPorUser(int id) {
+        Connection conn = UtilsDao.getConnection();
+        List<Order> orders = new ArrayList<Order>();
+
+        try {
+            String queryOrder = "Select * from library.order " +
+                    "where fkusid = ?";
+
+            PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
+            prepOrder.setInt(1, id);
+
+            ResultSet idOrder = prepOrder.executeQuery();
+            while (idOrder.next()) {
+                Order order = new Order();
+
+                order.setId(idOrder.getInt("orid"));
+                order.setDate(idOrder.getString("date"));
+                order.setNumberofbooks(idOrder.getInt("numberofbooks"));
+                orders.add(order);
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            orders = null;
+        }
+        return orders;
+
     }
 
     // atualiza a ordem
@@ -110,7 +145,7 @@ public class OrderDao {
             PreparedStatement prepOrder = conn.prepareStatement(queryOrder);
 
             prepOrder.setString(1, order.getDate().toString());
-            prepOrder.setInt(2, order.getNumberofbooks());
+            prepOrder.setInt(2, order.getListOrderItens().size());
             prepOrder.setInt(3, order.getId());
 
             response = prepOrder.executeUpdate() > 0;

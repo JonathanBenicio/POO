@@ -3,13 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Book.java</file>
             <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/livraria/Livraria.java</file>
-            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Order.java</file>
-            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/User.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/UtilsDao.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/AuthorDao.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Book.java</file>
             <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Author.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/BLL/AuthorBLL.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Order.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/BLL/OrderBLL.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/BLL/OrderItensBLL.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/UserDao.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/User.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/BookDao.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/OrderDao.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/PublisherDao.java</file>
             <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/OrderItens.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Dao/OrderItensDao.java</file>
             <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/Model/Publisher.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/BLL/BookBLL.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/BLL/UserBLL.java</file>
+            <file>file:/E:/usuarios/old_user/Documents/GitHub/Faculdade/POO/Livraria/src/livraria/CreateTable.java</file>
         </group>
     </open-files>
 </project-private>
